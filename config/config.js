@@ -75,10 +75,12 @@ var config = {
 						title: "Афиша www.048.ua",
 						url: "http://www.048.ua/rss/afisha"
 					},
+                    /*
 					{
 						title: "Афиша Одесса",
 						url: "http://md-eksperiment.org/rss.php"
 					}
+                    */
 				],
 				showSourceTitle: true,
 				showPublishDate: true,
@@ -86,6 +88,15 @@ var config = {
                 updateInterval: 20000
 			}
 		},
+        {
+          module: 'iFrame',
+          position: 'middle_center', // This can be any of the regions.
+          config: {
+            url: "https://calendar.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;hl=ru&amp;bgcolor=%23333333&amp;src=ht3jlfaac5lfd6263ulfh4tql8%40group.calendar.google.com&amp;color=%238C500B&amp;src=4h5ajk6irlvakqm3b1le9j7g78%40group.calendar.google.com&amp;color=%23B1365F&amp;src=ru.ukrainian%23holiday%40group.v.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FKiev",
+            width: "800px", // Optional. Default: 100%
+            height: "600px", //Optional. Default: 100px
+          }
+        },
         {
           module: "updatenotification",
           position: "top_bar"
