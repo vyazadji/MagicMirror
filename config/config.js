@@ -17,10 +17,6 @@ var config = {
 			module: 'alert',
 		},
 		{
-			module: "updatenotification",
-			position: "top_bar"
-		},
-		{
 			module: 'clock',
 			position: 'top_left'
 		},
@@ -88,7 +84,20 @@ var config = {
 				showPublishDate: true
 			}
 		},
-	]
+        {
+          module: 'calendar_monthly',
+          position: 'middle_center',
+          config: {
+            // The config property is optional
+            // Without a config, a default month view is shown
+            // Please see the 'Configuration Options' section for more information
+          }
+        },
+        {
+          module: "updatenotification",
+          position: "top_bar"
+        },
+    ]
 
 };
 
