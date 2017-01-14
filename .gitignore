@@ -1,3 +1,8 @@
+# Docker
+docker/*
+docker-compose.yml
+
+
 # Various Node ignoramuses.
 
 logs

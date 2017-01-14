@@ -102,7 +102,7 @@ var config = {
           module: 'MMM-RandomPhoto',
           position: 'fullscreen_below',
           config: {
-            opacity: 0.3,
+            opacity: 0.29,
             animationSpeed: 500,
             updateInterval: 60,
             url: 'https://unsplash.it/1920/1080/?random'
