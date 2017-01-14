@@ -26,8 +26,9 @@ var config = {
 		},
 		{
 			module: 'calendar',
-			header: 'US Holidays',
+			header: 'Календарь',
 			position: 'top_left',
+            maximumEntries: 20,
 			config: {
 				calendars: [
 					{
@@ -52,7 +53,7 @@ var config = {
 			module: 'currentweather',
 			position: 'top_right',
 			config: {
-				location: 'Odessag',
+				location: 'Одесса',
 				locationID: '698740',  //ID from http://www.openweathermap.org
 				appid: '07ecdcb2d4d25a1e1a3309c9ab276b62'
 			}
@@ -60,9 +61,11 @@ var config = {
 		{
 			module: 'weatherforecast',
 			position: 'top_right',
-			header: 'Weather Forecast',
+			header: 'Прогноз погоды',
+            showRainAmount: true,
+            maxNumberOfDays: 10,
 			config: {
-				location: 'Odessag',
+				location: 'Одесса',
 				locationID: '698740',  //ID from http://www.openweathermap.org
 				appid: '984d547837c83f16e3499e3f8bb944a7'
 			}
@@ -73,7 +76,7 @@ var config = {
 			config: {
 				feeds: [
 					{
-						title: "Afisha www.048.ua Odessa",
+						title: "Афиша www.048.ua",
 						url: "http://www.048.ua/rss/afisha"
 					},
 					{
