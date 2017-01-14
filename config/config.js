@@ -32,7 +32,13 @@ var config = {
 				calendars: [
 					{
 						symbol: 'calendar-check-o ',
-						url: 'webcal://www.calendarlabs.com/templates/ical/US-Holidays.ics'
+                        repeatingCountTitle: "Дни рождения",
+						url: 'https://calendar.google.com/calendar/ical/4h5ajk6irlvakqm3b1le9j7g78%40group.calendar.google.com/private-ecbc42870296bffac13a063ddf51d5be/basic.ics'
+					},
+					{
+						symbol: 'fa-home ',
+                        repeatingCountTitle: "Государственные праздники",
+						url: 'https://calendar.google.com/calendar/ical/ru.ukrainian%23holiday%40group.v.calendar.google.com/public/basic.ics'
 					}
 				]
 			}
