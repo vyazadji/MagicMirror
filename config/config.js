@@ -22,7 +22,7 @@ var config = {
 		},
 		{
 			module: 'calendar',
-			header: 'Календарь',
+			header: 'События',
 			position: 'top_left',
             maximumEntries: 20,
 			config: {
@@ -33,7 +33,7 @@ var config = {
 						url: 'https://calendar.google.com/calendar/ical/4h5ajk6irlvakqm3b1le9j7g78%40group.calendar.google.com/private-ecbc42870296bffac13a063ddf51d5be/basic.ics'
 					},
 					{
-						symbol: 'fa-home ',
+						symbol: 'home ',
                         repeatingCountTitle: "Государственные праздники",
 						url: 'https://calendar.google.com/calendar/ical/ru.ukrainian%23holiday%40group.v.calendar.google.com/public/basic.ics'
 					}
@@ -81,18 +81,11 @@ var config = {
 					}
 				],
 				showSourceTitle: true,
-				showPublishDate: true
+				showPublishDate: true,
+                showDescription: true,
+                updateInterval: 20000
 			}
 		},
-        {
-          module: 'calendar_monthly',
-          position: 'middle_center',
-          config: {
-            // The config property is optional
-            // Without a config, a default month view is shown
-            // Please see the 'Configuration Options' section for more information
-          }
-        },
         {
           module: "updatenotification",
           position: "top_bar"
