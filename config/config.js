@@ -6,7 +6,7 @@
 
 var config = {
 	port: 8080,
-	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
+	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:172.24.0.1"],
 
 	language: 'ru',
 	timeFormat: 24,
@@ -91,10 +91,21 @@ var config = {
         {
           module: 'iFrame',
           position: 'middle_center', // This can be any of the regions.
+          disabled: true,
           config: {
-            url: "https://calendar.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;hl=ru&amp;bgcolor=%23333333&amp;src=ht3jlfaac5lfd6263ulfh4tql8%40group.calendar.google.com&amp;color=%238C500B&amp;src=4h5ajk6irlvakqm3b1le9j7g78%40group.calendar.google.com&amp;color=%23B1365F&amp;src=ru.ukrainian%23holiday%40group.v.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FKiev",
-            width: "800px", // Optional. Default: 100%
-            height: "600px", //Optional. Default: 100px
+            url: "https://calendar.google.com/calendar/embed?...",
+            width: "500px", // Optional. Default: 100%
+            height: "550px", //Optional. Default: 100px
+          }
+        },
+        {
+          module: 'MMM-RandomPhoto',
+          position: 'fullscreen_below',
+          config: {
+            opacity: 0.3,
+            animationSpeed: 500,
+            updateInterval: 60,
+            url: 'https://unsplash.it/1920/1080/?random'
           }
         },
         {
