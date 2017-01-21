@@ -296,7 +296,7 @@ Module.register("currentweather",{
 	 */
 	processWeather: function(data) {
 
-		if (!data || !data.main || !data.main.temp) {
+		if (!data || !data.main || (!data.main.temp && data.main.temp !== 0)) {
 			// Did not receive usable new data.
 			// Maybe this needs a better check?
 			return;
