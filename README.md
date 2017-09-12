@@ -61,9 +61,6 @@ docker run  -d \
 			--name magic_mirror \
 			MichMich/MagicMirror
 ```
-### Run in server only mode in docker
-``` docker-compose up ```
-
 
 | **Volumes** | **Description** |
 | --- | --- |
@@ -77,6 +74,9 @@ var config = {
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:172.17.0.1"]
 };
 ```
+##### Run in server only mode in docker
+``` docker-compose up ```
+open http://localhost:8083
 
 #### Manual
 
