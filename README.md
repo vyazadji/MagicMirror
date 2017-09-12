@@ -61,6 +61,9 @@ docker run  -d \
 			--name magic_mirror \
 			MichMich/MagicMirror
 ```
+### Run in server only mode in docker
+``` docker-compose up ```
+
 
 | **Volumes** | **Description** |
 | --- | --- |
