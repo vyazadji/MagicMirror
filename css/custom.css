@@ -7,8 +7,16 @@
  *                                                   *
  * Add any custom CSS below.                         *
  * Changes to this files will be ignored by GIT. *
+ * map sending file to raspberry
+ *  map <F3>   <Esc>:!scp css/custom.css pi@192.168.1.204:/home/pi/MagicMirror/css/<CR>
  *****************************************************/
 
  body {
- 	
+   background: #02151C;
+   /*background: #39474F; #012837;*/
+   margin: 30px;
+ }
+
+ .module {
+   /*background: #012837;*/
  }
