@@ -7,6 +7,7 @@
 
 var fs = require("fs");
 var Server = require(__dirname + "/server.js");
+var Utils = require(__dirname + "/utils.js");
 var defaultModules = require(__dirname + "/../modules/default/defaultmodules.js");
 var path = require("path");
 
@@ -21,7 +22,8 @@ if (process.env.MM_CONFIG_FILE) {
 	global.configuration_file = process.env.MM_CONFIG_FILE;
 }
 
-//Hotfix PullRequest #673
+// FIXME: Hotfix Pull Request
+// https://github.com/MichMich/MagicMirror/pull/673
 if (process.env.MM_PORT) {
 	global.mmPort = process.env.MM_PORT;
 }
@@ -61,21 +63,40 @@ var App = function() {
 		try {
 			fs.accessSync(configFilename, fs.F_OK);
 			var c = require(configFilename);
+			checkDeprecatedOptions(c);
 			var config = Object.assign(defaults, c);
 			callback(config);
 		} catch (e) {
 			if (e.code == "ENOENT") {
-				console.error("WARNING! Could not find config file. Please create one. Starting with default configuration.");
-				callback(defaults);
+				console.error(Utils.colors.error("WARNING! Could not find config file. Please create one. Starting with default configuration."));
 			} else if (e instanceof ReferenceError || e instanceof SyntaxError) {
-				console.error("WARNING! Could not validate config file. Please correct syntax errors. Starting with default configuration.");
-				callback(defaults);
+				console.error(Utils.colors.error("WARNING! Could not validate config file. Please correct syntax errors. Starting with default configuration."));
 			} else {
-				console.error("WARNING! Could not load config file. Starting with default configuration. Error found: " + e);
-				callback(defaults);
+				console.error(Utils.colors.error("WARNING! Could not load config file. Starting with default configuration. Error found: " + e));
 			}
+			callback(defaults);
 		}
 	};
+
+	var checkDeprecatedOptions = function(userConfig) {
+		var deprecated = require(global.root_path + "/js/deprecated.js");
+		var deprecatedOptions = deprecated.configs;
+
+		var usedDeprecated = [];
+
+		deprecatedOptions.forEach(function(option) {
+			if (userConfig.hasOwnProperty(option)) {
+				usedDeprecated.push(option);
+			}
+		});
+		if (usedDeprecated.length > 0) {
+			console.warn(Utils.colors.warn(
+				"WARNING! Your config is using deprecated options: " +
+				usedDeprecated.join(", ") +
+				". Check README and CHANGELOG for more up-to-date ways of getting the same functionality.")
+			);
+		}
+	}
 
 	/* loadModule(module)
 	 * Loads a specific module.
@@ -215,6 +236,33 @@ var App = function() {
 			});
 		});
 	};
+
+	/* stop()
+	 * This methods stops the core app.
+	 * This calls each node_helper's STOP() function, if it exists.
+	 * Added to fix #1056
+	 */
+	this.stop = function() {
+		for (var h in nodeHelpers) {
+			var nodeHelper = nodeHelpers[h];
+			if (typeof nodeHelper.stop === "function") {
+				nodeHelper.stop();
+			}
+		}
+	};
+
+	/* Listen for SIGINT signal and call stop() function.
+	 *
+	 * Added to fix #1056
+	 * Note: this is only used if running `server-only`. Otherwise
+	 * this.stop() is called by app.on("before-quit"... in `electron.js`
+	 */
+	process.on("SIGINT", () => {
+		console.log("[SIGINT] Received. Shutting down server...");
+		setTimeout(() => { process.exit(0); }, 3000);  // Force quit after 3 seconds
+		this.stop();
+		process.exit(0);
+	});
 };
 
 module.exports = new App();

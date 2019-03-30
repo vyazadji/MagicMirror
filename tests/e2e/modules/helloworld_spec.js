@@ -1,44 +1,56 @@
-const Application = require("spectron").Application;
+const helpers = require("../global-setup");
 const path = require("path");
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+const request = require("request");
 
-var electronPath = path.join(__dirname, "../../../", "node_modules", ".bin", "electron");
+const expect = require("chai").expect;
 
-if (process.platform === "win32") {
-	electronPath += ".cmd";
-}
+const describe = global.describe;
+const it = global.it;
+const beforeEach = global.beforeEach;
+const afterEach = global.afterEach;
 
-var appPath = path.join(__dirname, "../../../js/electron.js");
+describe("Test helloworld module", function() {
+	helpers.setupTimeout(this);
 
-var app = new Application({
-	path: electronPath,
-	args: [appPath]
-});
+	var app = null;
 
-global.before(function () {
-	chai.should();
-	chai.use(chaiAsPromised);
-});
-
-describe("Test helloworld module", function () {
-	this.timeout(10000);
-
-	before(function() {
-		// Set config sample for use in test
-		process.env.MM_CONFIG_FILE = "tests/configs/modules/helloworld/helloworld.js";
+	beforeEach(function() {
+		return helpers
+			.startApplication({
+				args: ["js/electron.js"]
+			})
+			.then(function(startedApp) {
+				app = startedApp;
+			});
 	});
 
-	beforeEach(function (done) {
-		app.start().then(function() { done(); } );
+
+	afterEach(function() {
+		return helpers.stopApplication(app);
 	});
 
-	afterEach(function (done) {
-		app.stop().then(function() { done(); });
+	describe("helloworld set config text", function () {
+		before(function() {
+			// Set config sample for use in test
+			process.env.MM_CONFIG_FILE = "tests/configs/modules/helloworld/helloworld.js";
+		});
+
+		it("Test message helloworld module", function () {
+			return app.client.waitUntilWindowLoaded()
+				.getText(".helloworld").should.eventually.equal("Test HelloWorld Module");
+		});
 	});
 
-	it("Test message helloworld module", function () {
-		return app.client.waitUntilWindowLoaded()
-			.getText(".helloworld").should.eventually.equal("Test HelloWorld Module");
+	describe("helloworld default config text", function () {
+		before(function() {
+			// Set config sample for use in test
+			process.env.MM_CONFIG_FILE = "tests/configs/modules/helloworld/helloworld_default.js";
+		});
+
+		it("Test message helloworld module", function () {
+			return app.client.waitUntilWindowLoaded()
+				.getText(".helloworld").should.eventually.equal("Hello World!");
+		});
 	});
+
 });

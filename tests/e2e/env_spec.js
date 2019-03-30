@@ -1,51 +1,69 @@
-const Application = require("spectron").Application;
+const helpers = require("./global-setup");
 const path = require("path");
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
+const request = require("request");
 
-var electronPath = path.join(__dirname, "../../", "node_modules", ".bin", "electron");
+const expect = require("chai").expect;
 
-if (process.platform === "win32") {
-	electronPath += ".cmd";
-}
+const describe = global.describe;
+const it = global.it;
+const beforeEach = global.beforeEach;
+const afterEach = global.afterEach;
 
-var appPath = path.join(__dirname, "../../js/electron.js");
+describe("Electron app environment", function() {
+	helpers.setupTimeout(this);
 
-var app = new Application({
-	path: electronPath,
-	args: [appPath]
-});
-
-global.before(function () {
-	chai.should();
-	chai.use(chaiAsPromised);
-});
-
-describe("Electron app environment", function () {
-	this.timeout(10000);
+	var app = null;
 
 	before(function() {
 		// Set config sample for use in test
 		process.env.MM_CONFIG_FILE = "tests/configs/env.js";
 	});
 
-	beforeEach(function (done) {
-		app.start().then(function() { done(); } );
+	beforeEach(function() {
+		return helpers
+			.startApplication({
+				args: ["js/electron.js"]
+			})
+			.then(function(startedApp) {
+				app = startedApp;
+			});
 	});
 
-	afterEach(function (done) {
-		app.stop().then(function() { done(); });
+	afterEach(function() {
+		return helpers.stopApplication(app);
 	});
 
-
-	it("is set to open new app window", function () {
-		return app.client.waitUntilWindowLoaded()
-			.getWindowCount().should.eventually.equal(1);
+	it("should open a browserwindow", function() {
+		return app.client
+			.waitUntilWindowLoaded()
+			.browserWindow.focus()
+			.getWindowCount()
+			.should.eventually.equal(1)
+			.browserWindow.isMinimized()
+			.should.eventually.be.false.browserWindow.isDevToolsOpened()
+			.should.eventually.be.false.browserWindow.isVisible()
+			.should.eventually.be.true.browserWindow.isFocused()
+			.should.eventually.be.true.browserWindow.getBounds()
+			.should.eventually.have.property("width")
+			.and.be.above(0)
+			.browserWindow.getBounds()
+			.should.eventually.have.property("height")
+			.and.be.above(0)
+			.browserWindow.getTitle()
+			.should.eventually.equal("MagicMirror²");
 	});
 
-	it("sets correct window title", function () {
-		return app.client.waitUntilWindowLoaded()
-			.getTitle().should.eventually.equal("Magic Mirror");
+	it("get request from http://localhost:8080 should return 200", function(done) {
+		request.get("http://localhost:8080", function(err, res, body) {
+			expect(res.statusCode).to.equal(200);
+			done();
+		});
 	});
 
+	it("get request from http://localhost:8080/nothing should return 404", function(done) {
+		request.get("http://localhost:8080/nothing", function(err, res, body) {
+			expect(res.statusCode).to.equal(404);
+			done();
+		});
+	});
 });
