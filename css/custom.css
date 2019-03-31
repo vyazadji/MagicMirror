@@ -10,13 +10,22 @@
  * map sending file to raspberry
  *  map <F3>   <Esc>:!scp css/custom.css pi@192.168.1.204:/home/pi/MagicMirror/css/<CR>
  *****************************************************/
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #02151C;
+  }
 
  body {
-   background: #02151C;
-   /*background: #39474F; #012837;*/
-   margin: 30px;
+   margin: 20px;
+   width: calc(100% - 40px);
+   height: calc(100% - 40px);
  }
 
  .module {
    /*background: #012837;*/
  }
+
+.MMM-DarkSkyForecast .module-content {
+  width: 400px; /* adjust this to taste */
+}
